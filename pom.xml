@@ -9,6 +9,7 @@
 	<properties>
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
+		<junit.version>5.8.2</junit.version>
 		<lwjgl.version>3.3.1</lwjgl.version>
 		<joml.version>1.10.4</joml.version>
 		<lwjgl.natives>natives-windows</lwjgl.natives>
@@ -19,7 +20,7 @@
 			<dependency>
 				<groupId>org.junit</groupId>
 				<artifactId>junit-bom</artifactId>
-				<version>5.8.2</version>
+				<version>${junit.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -41,11 +42,19 @@
 			<version>1.18.24</version>
 		</dependency>
 
+		<!-- (s) test -->
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>3.22.0</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- (e) test -->
 
 		<!-- (s) logging -->
 		<dependency>
@@ -62,12 +71,6 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>jul-to-slf4j</artifactId>
 			<version>1.7.36</version>
-		</dependency>
-		<dependency>
-			<groupId>org.assertj</groupId>
-			<artifactId>assertj-core</artifactId>
-			<version>3.22.0</version>
-			<scope>test</scope>
 		</dependency>
 		<!-- (e) logging -->
 
