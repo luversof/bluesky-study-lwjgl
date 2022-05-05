@@ -1,26 +1,37 @@
 package io.github.luversof.study.lwjgl.main.domain;
 
-import java.awt.event.KeyEvent;
+import static org.lwjgl.opengl.GL11.GL_FLOAT;
+import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
+import static org.lwjgl.opengl.GL11.GL_UNSIGNED_INT;
+import static org.lwjgl.opengl.GL11.glDrawElements;
+import static org.lwjgl.opengl.GL15.GL_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_ELEMENT_ARRAY_BUFFER;
+import static org.lwjgl.opengl.GL15.GL_STATIC_DRAW;
+import static org.lwjgl.opengl.GL15.glBindBuffer;
+import static org.lwjgl.opengl.GL15.glBufferData;
+import static org.lwjgl.opengl.GL15.glGenBuffers;
+import static org.lwjgl.opengl.GL20.glDisableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
+import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
+import static org.lwjgl.opengl.GL30.glBindVertexArray;
+import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 
+import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
 import io.github.luversof.study.lwjgl.main.renderer.Shader;
 
-import static org.lwjgl.opengl.GL20.*;
-import static org.lwjgl.opengl.GL30.*;
-
 public class LevelEditorScene extends Scene {
-	
-	private int vertexID, fragmentID, shaderProgram;
 	
 	private float[] vertexArray = {
 			// position				//color
-			0.5f, -0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,	// Bottom right
-			-0.5f, 0.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,	// Top left
-			0.5f, 0.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,	// Top right
-			-0.5f, -0.5f, 0.0f,		1.0f, 1.0f, 1.0f, 1.0f,	// Bottom right
+			100.5f, 0.5f, 0.0f,		1.0f, 0.0f, 0.0f, 1.0f,	// Bottom right
+			0.5f, 100.5f, 0.0f,		0.0f, 1.0f, 0.0f, 1.0f,	// Top left
+			100.5f, 100.5f, 0.0f,		0.0f, 0.0f, 1.0f, 1.0f,	// Top right
+			0.5f, 0.5f, 0.0f,		1.0f, 1.0f, 0.0f, 1.0f,	// Bottom right
 	};
 	
 	// IMPORTANT Must be in counter-clockwise order
@@ -44,6 +55,7 @@ public class LevelEditorScene extends Scene {
 	
 	@Override
 	public void init() {
+		this.camera = new Camera(new Vector2f());
 		defaultShader = new Shader("src/main/resources/assets/shaders/default.glsl");
 		defaultShader.compile();
 		
@@ -87,9 +99,12 @@ public class LevelEditorScene extends Scene {
 	
 	@Override
 	public void update(float dt) {
+		camera.position.x -= dt * 50.0f;
+		
 		defaultShader.use();
-		// Bind shader program
-		glUseProgram(shaderProgram);
+		defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
+		defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+
 		// Bind the VAO that we're using
 		glBindVertexArray(vaoID);
 		
