@@ -23,6 +23,7 @@ import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
 import io.github.luversof.study.lwjgl.main.renderer.Shader;
+import io.github.luversof.study.lwjgl.util.TimeUtil;
 
 public class LevelEditorScene extends Scene {
 	
@@ -104,6 +105,7 @@ public class LevelEditorScene extends Scene {
 		defaultShader.use();
 		defaultShader.uploadMat4f("uProjection", camera.getProjectionMatrix());
 		defaultShader.uploadMat4f("uView", camera.getViewMatrix());
+		defaultShader.uploadFloat("uTime", TimeUtil.getTime());
 
 		// Bind the VAO that we're using
 		glBindVertexArray(vaoID);
