@@ -25,6 +25,8 @@ import java.nio.IntBuffer;
 import org.joml.Vector2f;
 import org.lwjgl.BufferUtils;
 
+import io.github.luversof.study.lwjgl.main.components.FontRenderer;
+import io.github.luversof.study.lwjgl.main.components.SpriteRenderer;
 import io.github.luversof.study.lwjgl.main.renderer.Shader;
 import io.github.luversof.study.lwjgl.main.renderer.Texture;
 import io.github.luversof.study.lwjgl.util.TimeUtil;
@@ -54,6 +56,9 @@ public class LevelEditorScene extends Scene {
 	
 	private Shader defaultShader;
 	private Texture testTexture;
+	
+	GameObject testObj;
+	private boolean firstTime = false;
 
 	public LevelEditorScene() {
 
@@ -61,6 +66,12 @@ public class LevelEditorScene extends Scene {
 	
 	@Override
 	public void init() {
+		System.out.println("Creating 'testObject'");
+		this.testObj = new GameObject("testObject");
+		this.testObj.addComponent(new SpriteRenderer());
+		this.testObj.addComponent(new FontRenderer());
+		this.addGameObjectToScene(this.testObj);
+		
 		this.camera = new Camera(new Vector2f());
 		defaultShader = new Shader("src/main/resources/assets/shaders/default.glsl");
 		defaultShader.compile();
@@ -137,6 +148,18 @@ public class LevelEditorScene extends Scene {
 		glBindVertexArray(0);
 		
 		defaultShader.detach();
+
+		if (!firstTime) {
+			System.out.println("Creating gameObject!");
+			GameObject go = new GameObject("Gamte Test 2");
+			go.addComponent(new SpriteRenderer());
+			this.addGameObjectToScene(go);
+			firstTime = true;
+		}
+		
+		for (GameObject go : this.gameObjects) {
+			go.update(dt);
+		}
 	}
 	
 }
