@@ -10,6 +10,7 @@ import static org.lwjgl.glfw.GLFW.glfwCreateWindow;
 import static org.lwjgl.glfw.GLFW.glfwDefaultWindowHints;
 import static org.lwjgl.glfw.GLFW.glfwDestroyWindow;
 import static org.lwjgl.glfw.GLFW.glfwGetPrimaryMonitor;
+import static org.lwjgl.glfw.GLFW.glfwGetTime;
 import static org.lwjgl.glfw.GLFW.glfwGetVideoMode;
 import static org.lwjgl.glfw.GLFW.glfwGetWindowSize;
 import static org.lwjgl.glfw.GLFW.glfwInit;
@@ -42,7 +43,6 @@ import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
-import io.github.luversof.study.lwjgl.util.TimeUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -131,9 +131,7 @@ public class MainWindow {
 
 		// Make the window visible
 		glfwShowWindow(window);
-	}
-
-	private void loop() {
+		
 		// This line is critical for LWJGL's interoperation with GLFW's
 		// OpenGL context, or any context that is managed externally.
 		// LWJGL detects the context that is current in the current thread,
@@ -142,15 +140,14 @@ public class MainWindow {
 		GL.createCapabilities();
 		
 		MainWindow.changeScene(0);
+	}
 
+	private void loop() {
 		// Set the clear color
-		
-		
-		float beginTime = TimeUtil.getTime();
+		float beginTime = (float) glfwGetTime();
 		float endTime;
 		float dt = -1.0f;
 		
-
 		// Run the rendering loop until the user has attempted to close
 		// the window or has pressed the ESCAPE key.
 		while ( !glfwWindowShouldClose(window) ) {
@@ -174,7 +171,7 @@ public class MainWindow {
 		
 			glfwSwapBuffers(window); // swap the color buffers
 			
-			endTime = TimeUtil.getTime();
+			endTime = (float) glfwGetTime();
 			dt =  endTime - beginTime;
 			beginTime = endTime;
 		}
@@ -203,6 +200,10 @@ public class MainWindow {
 				assert false : "Unknown scene '" + newScene + "'";
 				break;
 		}
+	}
+	
+	public static Scene getScene() {
+		return get().currentScene;
 	}
 
 }

@@ -1,15 +1,12 @@
 package io.github.luversof.study.lwjgl.main;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.lwjgl.glfw.GLFW.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-
 import io.github.luversof.study.lwjgl.main.domain.MainWindow;
-import io.github.luversof.study.lwjgl.util.TimeUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -40,8 +37,4 @@ class MainTest {
 		log.debug("TEST ");
 	}
 	
-	@Test
-	void test2() {
-		System.out.println(TimeUtil.getTime());
-	}
 }
